@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+
+package mailer;
+
+option go_package = "mailer/proto";
+
+service Mailer {
+  rpc SendPass(MsgRequest) returns (MsgReply) {}
+  rpc RetrievePass(MsgRequest) returns (MsgReply) {}
+}
+
+//формат данных для сообщения MsgRequest
+//первое поле - строка, название to
+//второе поле - строка, название code
+
+message MsgRequest {
+  Person person = 1;
+  repeated string toEmail = 2;
+  repeated File files = 3;
+
+  message Person {
+    string name = 1;
+    string from_email = 2;
+    string role = 3;
+  }
+  message File {
+    string name = 1;
+    bytes data = 2;
+  }
+}
+
+//формат данных для сообщения MsgReply
+//одно поле - булеан, название sent
+
+message MsgReply {
+  bool sent = 1;
+}
